@@ -99,4 +99,15 @@ function renderSolution(solutionId) {
     
     // Experience (handle newlines)
     document.getElementById('result-exp').innerHTML = sol.experience.replace(/\n/g, '<br>');
+
+    // Code Snippet (Optional)
+    const codeArea = document.getElementById('code-area');
+    const codeBlock = document.getElementById('result-code');
+    
+    if (sol.codeSnippet) {
+        codeBlock.textContent = sol.codeSnippet;
+        codeArea.classList.remove('hidden');
+    } else {
+        codeArea.classList.add('hidden');
+    }
 }
