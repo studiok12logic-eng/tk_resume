@@ -75,25 +75,28 @@ function renderResume(data) {
     // Helper to add rows
     const addRow = (year, month, content, className = '') => {
         const tr = document.createElement('tr');
-        // Convert 2010 -> Heisei 22, etc. (Optional, implementing simple logic or using data as is)
-        // For simplicity, we assume data needs conversion or display as is. 
-        // Let's implement a simple era converter or just output year.
-        // The user's example used "平成22", "令和1".
         
-        let eraYear = year;
-        let eraName = "";
-        
-        if (year < 2019) {
-            eraName = "平成";
-            eraYear = year - 1988;
-        } else {
-            eraName = "令和";
-            eraYear = year - 2018;
+        let yearText = "";
+        let monthText = "";
+
+        if (year) {
+            let eraYear = year;
+            let eraName = "";
+            
+            if (year < 2019) {
+                eraName = "平成";
+                eraYear = year - 1988;
+            } else {
+                eraName = "令和";
+                eraYear = year - 2018;
+            }
+            yearText = `${eraName}${eraYear}`;
+            monthText = month;
         }
 
         tr.innerHTML = `
-            <td class="text-center">${eraName}${eraYear}</td>
-            <td class="text-center">${month}</td>
+            <td class="text-center">${yearText}</td>
+            <td class="text-center">${monthText}</td>
             <td class="${className}">${content}</td>
         `;
         historyBody.appendChild(tr);
@@ -126,17 +129,23 @@ function renderResume(data) {
     licenseBody.innerHTML = '';
     data.licenses.forEach(item => {
         const tr = document.createElement('tr');
-         let eraYear = item.year;
-        let eraName = "";
-        if (item.year < 2019) {
-            eraName = "平成";
-            eraYear = item.year - 1988;
-        } else {
-            eraName = "令和";
-            eraYear = item.year - 2018;
+        let yearText = "";
+        
+        if (item.year) {
+             let eraYear = item.year;
+            let eraName = "";
+            if (item.year < 2019) {
+                eraName = "平成";
+                eraYear = item.year - 1988;
+            } else {
+                eraName = "令和";
+                eraYear = item.year - 2018;
+            }
+            yearText = `${eraName}${eraYear}`;
         }
+       
         tr.innerHTML = `
-             <td class="text-center">${eraName}${eraYear}</td>
+             <td class="text-center">${yearText}</td>
             <td class="text-center">${item.month}</td>
             <td>${item.text}</td>
         `;
@@ -164,14 +173,46 @@ function renderSkills(data) {
     // Summary
     document.getElementById('skill-summary').innerHTML = data.skills.summary.replace(/\n/g, '<br>');
 
-    // Tech List
-    const techUl = document.getElementById('skill-tech-list');
-    techUl.innerHTML = '';
-    data.skills.techList.forEach(tech => {
-        const li = document.createElement('li');
-        li.textContent = tech;
-        techUl.appendChild(li);
-    });
+    // Tech List (Now PC Skills)
+    const techArea = document.getElementById('skill-tech-list');
+    // Clear previous usage (it was a UL, but we want a table now, so we might need to change parent interaction)
+    // Actually the parent is a UL in HTML. We should probably dynamically create a table instead.
+    
+    // Find the parent div of the list
+    const sectionDiv = techArea.parentNode;
+    sectionDiv.innerHTML = '<h2>■ 活かせる経験・知識・技術（PCスキル）</h2>';
+    
+    const table = document.createElement('table');
+    table.className = 'skill-table';
+    table.innerHTML = `
+        <tr>
+            <th style="width: 30%;">スキル</th>
+            <th>レベル・詳細</th>
+        </tr>
+    `;
+
+    // Check if pcSkills exists (new format) or fallback to techList (old format)
+    const skillsList = data.skills.pcSkills || data.skills.techList;
+
+    if (skillsList && skillsList.length > 0) {
+        if (typeof skillsList[0] === 'string') {
+             // Old format string list
+            skillsList.forEach(tech => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${tech}</td><td>-</td>`;
+                table.appendChild(tr);
+            });
+        } else {
+            // New format object list
+             skillsList.forEach(skill => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${skill.name}</td><td>${skill.level}</td>`;
+                table.appendChild(tr);
+            });
+        }
+    }
+    sectionDiv.appendChild(table);
+
 
     // History
     const historyContainer = document.getElementById('skill-history-container');
@@ -196,18 +237,18 @@ function renderSkills(data) {
         table.className = 'skill-table';
         table.innerHTML = `
             <tr>
-                <th>期間</th>
-                <th>業務内容</th>
-                <th>役割・規模</th>
+                <th style="width: 15%;">期間</th>
+                <th style="width: 70%;">業務内容</th>
+                <th style="width: 15%;">役割</th>
             </tr>
         `;
         
         company.entries.forEach(entry => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${entry.term}</td>
+                <td style="text-align: center;">${entry.term}</td>
                 <td>${entry.content}</td>
-                <td>${entry.role}</td>
+                <td style="text-align: center;">${entry.role}</td>
             `;
             table.appendChild(tr);
         });
@@ -216,8 +257,6 @@ function renderSkills(data) {
 
      // Self Promotion
     const selfPromoContainer = document.getElementById('self-promo-container');
-    // Using simple approach to fill existing structure if possible or rebuild.
-    // Let's rebuild for flexibility.
     selfPromoContainer.innerHTML = `<h2>■ 自己PR</h2>`;
     
     const p = document.createElement('p');
