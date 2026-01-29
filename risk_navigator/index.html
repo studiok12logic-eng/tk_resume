@@ -30,45 +30,45 @@
     <div class="glass-panel control-panel">
         <div class="panel-header">
             <h1><i class="fa-solid fa-layer-group"></i> Risk Navigator <span class="badge">PRO</span></h1>
-            <p class="subtitle">Infrastructure Decision Support System</p>
+            <p class="subtitle">インフラ維持管理意思決定支援システム</p>
         </div>
 
         <!-- Weather Status (Simulated) -->
         <div class="status-card">
             <div class="status-icon"><i class="fa-solid fa-cloud-rain"></i></div>
             <div class="status-info">
-                <span class="label">Current Weather (Simulated)</span>
-                <span class="value" id="current-weather">Loading...</span>
+                <span class="label">現在の気象状況 (シミュレーション)</span>
+                <span class="value" id="current-weather">データ取得中...</span>
             </div>
         </div>
 
         <!-- Layer Controls -->
         <div class="layer-controls">
-            <h3>Display Layers</h3>
+            <h3>表示レイヤー</h3>
             <label class="toggle-switch">
                 <input type="checkbox" id="layer-flood">
                 <span class="slider"></span>
-                <span class="label-text">Flood Risk Areas (WMS)</span>
+                <span class="label-text">洪水浸水想定区域 (国土地理院)</span>
             </label>
             <label class="toggle-switch">
                 <input type="checkbox" id="layer-landslide">
                 <span class="slider"></span>
-                <span class="label-text">Landslide Danger (WMS)</span>
+                <span class="label-text">土砂災害警戒区域 (国土地理院)</span>
             </label>
         </div>
 
         <div class="actions">
-            <button id="simulate-rain-btn" class="btn primary"><i class="fa-solid fa-play"></i> Simulate Rain</button>
-            <button id="reset-btn" class="btn secondary"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+            <button id="simulate-rain-btn" class="btn primary"><i class="fa-solid fa-play"></i> 豪雨シミュレーション</button>
+            <button id="reset-btn" class="btn secondary"><i class="fa-solid fa-rotate-left"></i> リセット</button>
         </div>
     </div>
 
     <!-- UI Overlay: Legend -->
     <div class="glass-panel legend-panel">
-        <h3>Risk Priority</h3>
-        <div class="legend-item"><span class="dot high"></span> High Action (24h)</div>
-        <div class="legend-item"><span class="dot mid"></span> Monitor (1 week)</div>
-        <div class="legend-item"><span class="dot low"></span> Low Risk</div>
+        <h3>リスク判定 (優先度)</h3>
+        <div class="legend-item"><span class="dot high"></span> 最優先 (24時間以内)</div>
+        <div class="legend-item"><span class="dot mid"></span> 要注意 (1週間以内)</div>
+        <div class="legend-item"><span class="dot low"></span> 特別な異常なし</div>
     </div>
 
     <!-- Leaflet JS -->
