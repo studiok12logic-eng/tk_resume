@@ -1,7 +1,64 @@
 
+// Expose checkPassword globally
+window.checkPassword = async function() {
+    const input = document.getElementById('password-input').value;
+    const errorMsg = document.getElementById('error-msg');
+
+    try {
+        const response = await fetch('resume_data.json');
+        const data = await response.json();
+
+        if (data.variants && data.variants[input]) {
+            localStorage.setItem('resume_variant', input); // Store the "password" as the variant key
+            
+            // UI Logic for index.html
+            const loginArea = document.getElementById('login-area');
+            const contentArea = document.getElementById('content-area');
+            if (loginArea && contentArea) {
+                loginArea.style.display = 'none';
+                contentArea.style.display = 'flex';
+            }
+        } else {
+            errorMsg.style.display = 'block';
+        }
+    } catch (e) {
+        console.error("Login Error", e);
+        errorMsg.textContent = "データ読み込みエラー";
+        errorMsg.style.display = 'block';
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-    fetchData();
-    setupButtons();
+    // Index Page Auto-Login Check
+    if (document.getElementById('login-area')) {
+        const storedVariant = localStorage.getItem('resume_variant');
+        if (storedVariant) {
+             // Verify validity (optional, but good practice in case JSON changed keys)
+             fetch('resume_data.json').then(res => res.json()).then(data => {
+                 if (data.variants[storedVariant]) {
+                     document.getElementById('login-area').style.display = 'none';
+                     document.getElementById('content-area').style.display = 'flex';
+                 } else {
+                     localStorage.removeItem('resume_variant'); // Invalid key
+                 }
+             });
+        }
+        
+        // Bind events for index.html
+        const loginBtn = document.getElementById('login-btn');
+        const passInput = document.getElementById('password-input');
+        if (loginBtn) {
+            loginBtn.addEventListener('click', window.checkPassword);
+        }
+        if (passInput) {
+            passInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') window.checkPassword();
+            });
+        }
+    } else {
+        fetchData();
+        setupButtons();
+    }
 });
 
 async function fetchData() {
@@ -9,10 +66,21 @@ async function fetchData() {
         const response = await fetch('resume_data.json');
         const data = await response.json();
         
+        // Get variant
+        const variantKey = localStorage.getItem('resume_variant');
+        const variant = (data.variants && variantKey) ? data.variants[variantKey] : null;
+
+        // Redirect if no valid login (protect sub-pages)
+        if (!variant && !document.getElementById('login-area')) {
+             // If we are on a sub-page but have no auth, redirect to index
+            window.location.href = 'index.html';
+            return;
+        }
+
         if (document.getElementById('resume-page')) {
-            renderResume(data);
+            renderResume(data, variant);
         } else if (document.getElementById('skills-page')) {
-            renderSkills(data);
+            renderSkills(data, variant);
         }
     } catch (error) {
         console.error('Error loading data:', error);
@@ -23,6 +91,9 @@ function setupButtons() {
     const backBtn = document.getElementById('btn-back');
     if (backBtn) {
         backBtn.addEventListener('click', () => {
+             // Clear auth on explicit back? No, usually keep it.
+             // If user wants to logout, they should close tab or we add logout button.
+             // For now just link back.
             window.location.href = 'index.html';
         });
     }
@@ -46,7 +117,7 @@ function calculateAge(birthDate) {
     return age;
 }
 
-function renderResume(data) {
+function renderResume(data, variant) {
     // Current Date
     const dateRight = document.querySelector('.date-right');
     if (dateRight) dateRight.textContent = `${data.lastUpdated} 現在`;
@@ -56,9 +127,6 @@ function renderResume(data) {
     document.getElementById('profile-name').textContent = `氏名　　${data.profile.name}`;
     
     const age = calculateAge(data.profile.birthDate);
-    // Convert year to Japanese Era roughly or just use full string from data if structured that way.
-    // Simplifying to YYYY/MM/DD for now or constructing typical JP format
-    // Heisei 3 is 1991.
     document.getElementById('profile-birth').innerHTML = `${data.profile.birthDate.year}年 ${data.profile.birthDate.month}月 ${data.profile.birthDate.day}日生 (満 ${age}歳) &nbsp;&nbsp;&nbsp;&nbsp; 性別　${data.profile.gender}`;
 
     document.getElementById('profile-addr-furigana').textContent = `ふりがな　${data.profile.address.furigana}`;
@@ -157,13 +225,16 @@ function renderResume(data) {
     document.getElementById('family-spouse').textContent = data.family.spouse;
     document.getElementById('family-obligation').textContent = data.family.spouseObligation;
     
-    // Motivation
-    document.getElementById('motivation-text').innerHTML = data.motivation || '';
-    document.getElementById('requests-text').innerHTML = data.requests || '';
+    // Motivation & Requests (FROM VARIANT)
+    const motivationText = variant ? variant.motivation : "";
+    const requestsText = variant ? variant.requests : "";
+
+    document.getElementById('motivation-text').innerHTML = motivationText.replace(/\n/g, '<br>');
+    document.getElementById('requests-text').innerHTML = requestsText.replace(/\n/g, '<br>');
 
 }
 
-function renderSkills(data) {
+function renderSkills(data, variant) {
      // Current Date
     const dateRight = document.querySelector('.date-right');
     if (dateRight) dateRight.textContent = `${data.lastUpdated} 現在`;
@@ -173,12 +244,8 @@ function renderSkills(data) {
     // Summary
     document.getElementById('skill-summary').innerHTML = data.skills.summary.replace(/\n/g, '<br>');
 
-    // Tech List (Now PC Skills)
+    // Tech List (PC Skills)
     const techArea = document.getElementById('skill-tech-list');
-    // Clear previous usage (it was a UL, but we want a table now, so we might need to change parent interaction)
-    // Actually the parent is a UL in HTML. We should probably dynamically create a table instead.
-    
-    // Find the parent div of the list
     const sectionDiv = techArea.parentNode;
     sectionDiv.innerHTML = '<h2>■ 活かせる経験・知識・技術（PCスキル）</h2>';
     
@@ -191,19 +258,15 @@ function renderSkills(data) {
         </tr>
     `;
 
-    // Check if pcSkills exists (new format) or fallback to techList (old format)
     const skillsList = data.skills.pcSkills || data.skills.techList;
-
     if (skillsList && skillsList.length > 0) {
         if (typeof skillsList[0] === 'string') {
-             // Old format string list
             skillsList.forEach(tech => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `<td>${tech}</td><td>-</td>`;
                 table.appendChild(tr);
             });
         } else {
-            // New format object list
              skillsList.forEach(skill => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `<td>${skill.name}</td><td>${skill.level}</td>`;
@@ -213,12 +276,10 @@ function renderSkills(data) {
     }
     sectionDiv.appendChild(table);
 
-
     // History
     const historyContainer = document.getElementById('skill-history-container');
     historyContainer.innerHTML = '';
     
-    // Header setup
     const sectionHeader = document.createElement('h2');
     sectionHeader.textContent = '■ 職務経歴';
     historyContainer.appendChild(sectionHeader);

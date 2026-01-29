@@ -40,8 +40,16 @@
     {"year": 2021, "month": 6, "text": "普通自動車第一種運転免許（AT限定）　取得"},
     {"year": 2023, "month": 7, "text": "RPA技術者検定エキスパート　合格"}
   ],
-  "motivation": "",
-  "requests": "",
+  "variants": {
+    "tokisa2026": {
+      "motivation": "（標準）今回、貴社の求人を拝見し、自身のこれまでの経験を活かせると考え志望いたしました。",
+      "requests": "（標準）貴社の規定に従います。"
+    },
+    "tokisa_dev": {
+      "motivation": "（開発用サンプル）自身のRPAおよびWeb開発スキルを最大限に発揮できる環境であると考え、志望いたしました。",
+      "requests": "年収：応相談\n勤務地：福岡市内希望"
+    }
+  },
   "family": {
     "dependents": 1,
     "spouse": "有",
