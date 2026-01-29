@@ -1,0 +1,185 @@
+@charset "UTF-8";
+
+:root {
+    --text-color: #333;
+    --border-color: #000;
+    --bg-color: #ccc;
+    --paper-color: #fff;
+    --primary-color: #333;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    font-size: 11pt;
+    margin: 0;
+    padding: 20px;
+    -webkit-print-color-adjust: exact;
+}
+
+.page {
+    background: var(--paper-color);
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 15mm;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+h1 {
+    text-align: left;
+    font-size: 24pt;
+    margin: 0 0 10mm 0;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 2mm;
+    line-height: normal;
+}
+
+h1 .date-right {
+    float: right;
+    font-size: 11pt;
+    font-weight: normal;
+    margin-top: 10px;
+}
+
+/* Resume Table Styles */
+table.resume-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 5mm;
+    border: 1px solid var(--border-color);
+}
+
+table.resume-table th, 
+table.resume-table td {
+    border: 1px solid var(--border-color);
+    padding: 4px;
+    vertical-align: middle;
+}
+
+table.resume-table th {
+    background-color: #f0f0f0; /* Slight gray for headers (optional, traditional is white but this helps readability) */
+    font-weight: normal;
+    text-align: center;
+}
+
+/* Specific Columns */
+.col-date-y { width: 60px; text-align: center; }
+.col-date-m { width: 40px; text-align: center; }
+.col-content { text-align: left; padding-left: 10px; }
+
+/* Profile Section */
+.profile-table {
+    width: 100%;
+    margin-bottom: 5mm;
+    border-collapse: collapse;
+}
+.profile-table td {
+    border: 1px solid var(--border-color);
+    padding: 5px;
+}
+
+.furigana-label {
+    font-size: 9pt;
+    margin-bottom: 2px;
+}
+.name-text {
+    font-size: 18pt;
+    font-weight: bold;
+}
+.photo-area {
+    width: 40mm;
+    height: 50mm; /* Standard photo size ratio roughly */
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid var(--border-color);
+    color: #ccc;
+}
+
+/* Education and History */
+.section-title {
+    text-align: center;
+    font-weight: bold;
+    background: #f9f9f9;
+}
+
+/* Base Styles for Screen */
+@media screen {
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .page {
+        margin-bottom: 20px;
+    }
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: none;
+        padding: 0;
+    }
+    .page {
+        width: 100%;
+        height: auto;
+        min-height: auto;
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        page-break-after: always;
+    }
+}
+
+/* Utility */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.mb-2 { margin-bottom: 2mm; }
+.mt-2 { margin-top: 2mm; }
+
+/* Skills Sheet Specific */
+.skills-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+}
+.skills-header h1 {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+.skill-section {
+    margin-bottom: 25px;
+}
+.skill-section h2 {
+    font-size: 14pt;
+    border-left: 5px solid #333;
+    padding-left: 10px;
+    margin-bottom: 15px;
+    background: #eee;
+    padding: 5px 10px;
+}
+.skill-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.skill-table th, .skill-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+.skill-table th {
+    background-color: #f5f5f5;
+    width: 25%;
+}
