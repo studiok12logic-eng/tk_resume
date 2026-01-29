@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infrastructure Risk Navigator</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    
+    <!-- Google Fonts (Inter, Roboto Mono) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Map Container -->
+    <div id="map"></div>
+
+    <!-- UI Overlay: Control Panel -->
+    <div class="glass-panel control-panel">
+        <div class="panel-header">
+            <h1><i class="fa-solid fa-layer-group"></i> Risk Navigator <span class="badge">PRO</span></h1>
+            <p class="subtitle">Infrastructure Decision Support System</p>
+        </div>
+
+        <!-- Weather Status (Simulated) -->
+        <div class="status-card">
+            <div class="status-icon"><i class="fa-solid fa-cloud-rain"></i></div>
+            <div class="status-info">
+                <span class="label">Current Weather (Simulated)</span>
+                <span class="value" id="current-weather">Loading...</span>
+            </div>
+        </div>
+
+        <!-- Layer Controls -->
+        <div class="layer-controls">
+            <h3>Display Layers</h3>
+            <label class="toggle-switch">
+                <input type="checkbox" id="layer-flood">
+                <span class="slider"></span>
+                <span class="label-text">Flood Risk Areas (WMS)</span>
+            </label>
+            <label class="toggle-switch">
+                <input type="checkbox" id="layer-landslide">
+                <span class="slider"></span>
+                <span class="label-text">Landslide Danger (WMS)</span>
+            </label>
+        </div>
+
+        <div class="actions">
+            <button id="simulate-rain-btn" class="btn primary"><i class="fa-solid fa-play"></i> Simulate Rain</button>
+            <button id="reset-btn" class="btn secondary"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+        </div>
+    </div>
+
+    <!-- UI Overlay: Legend -->
+    <div class="glass-panel legend-panel">
+        <h3>Risk Priority</h3>
+        <div class="legend-item"><span class="dot high"></span> High Action (24h)</div>
+        <div class="legend-item"><span class="dot mid"></span> Monitor (1 week)</div>
+        <div class="legend-item"><span class="dot low"></span> Low Risk</div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+    
+    <!-- Application Scripts -->
+    <script src="mock_data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
