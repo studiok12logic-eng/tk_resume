@@ -21,13 +21,16 @@
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             text-align: center;
+            max-width: 400px;
+            width: 90%;
         }
         h1 {
             margin-bottom: 30px;
             color: #333;
         }
         .links {
-            display: flex;
+            display: none; /* Hidden by default */
+            flex-direction: column;
             gap: 20px;
             justify-content: center;
         }
@@ -44,17 +47,74 @@
         a:hover {
             background: #0056b3;
         }
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        input[type="password"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .error {
+            color: red;
+            display: none;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
         <h1>時佐 克哉の資料</h1>
-        <div class="links">
+        
+        <div id="login-area" class="login-form">
+            <p>閲覧するにはパスワードを入力してください。</p>
+            <input type="password" id="password-input" placeholder="Password">
+            <button id="login-btn">解除</button>
+            <div id="error-msg" class="error">パスワードが間違っています</div>
+        </div>
+
+        <div id="content-area" class="links">
             <a href="resume.html">履歴書を見る</a>
             <a href="skills.html">職務経歴書を見る</a>
         </div>
     </div>
+
+    <script>
+        document.getElementById('login-btn').addEventListener('click', checkPassword);
+        document.getElementById('password-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        function checkPassword() {
+            const input = document.getElementById('password-input').value;
+            // Simple check. change 'secret' to whatever you want.
+            // Note: This is visible in source code!
+            if (input === 'tokisa2026') {
+                document.getElementById('login-area').style.display = 'none';
+                document.getElementById('content-area').style.display = 'flex';
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        }
+    </script>
 
 </body>
 </html>
