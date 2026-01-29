@@ -3,128 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>時佐 克哉 - ポートフォリオ</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            background: #f0f0f0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-        }
-        h1 {
-            margin-bottom: 30px;
-            color: #333;
-        }
-        .links {
-            display: none; /* Hidden by default */
-            flex-direction: column;
-            gap: 20px;
-            justify-content: center;
-        }
-        a {
-            display: inline-block;
-            padding: 15px 30px;
-            background: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        a:hover {
-            background: #0056b3;
-        }
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        input[type="password"] {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        button {
-            padding: 10px 20px;
-            background: #333;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            opacity: 0.9;
-        }
-        .error {
-            color: red;
-            display: none;
-            margin-top: 10px;
-        }
-    </style>
+    <title>業務効率化・開発課題解決マップ｜時佐克哉</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="container">
-        <h1>時佐 克哉の資料</h1>
-        
-        <div id="login-area" class="login-form">
-            <p>閲覧するにはパスワードを入力してください。</p>
-            <input type="password" id="password-input" placeholder="Password">
-            <button id="login-btn">解除</button>
-            <div id="error-msg" class="error">パスワードが間違っています</div>
+    <header>
+        <div class="header-container">
+            <h1>業務効率化・開発課題解決マップ</h1>
+            <p>あなたの課題に最適なITソリューションをご提案します</p>
         </div>
+    </header>
 
-        <div id="content-area" class="links">
-            <a href="resume.html">履歴書を見る</a>
-            <a href="skills.html">職務経歴書を見る</a>
+    <main>
+        <div id="diagnostic-container" class="diagnostic-card">
+            <div id="question-area">
+                <h2 id="question-text">読み込み中...</h2>
+                <div id="options-container" class="options-grid"></div>
+            </div>
+            
+            <div id="result-area" class="hidden">
+                 <div class="result-header">
+                    <span class="badge">ご提案</span>
+                    <h2 id="result-title"></h2>
+                 </div>
+                 <div class="result-content">
+                    <p id="result-desc"></p>
+                    <div class="result-experience">
+                        <h3><i class="icon-check"></i> 私の実績・経験</h3>
+                        <p id="result-exp"></p>
+                    </div>
+                    <button id="reset-btn" class="btn-secondary">もう一度診断する</button>
+                 </div>
+            </div>
         </div>
-    </div>
+    </main>
 
+    <footer>
+        <p>© 2026 Katsuya Tokisa - Problem Solving Portfolio</p>
+    </footer>
 
-    <script>
-        // Check if already logged in
-        if (localStorage.getItem('isLoggedIn') === 'true') {
-            showContent();
-        }
-
-        document.getElementById('login-btn').addEventListener('click', checkPassword);
-        document.getElementById('password-input').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                checkPassword();
-            }
-        });
-
-        function checkPassword() {
-            const input = document.getElementById('password-input').value;
-             // Simple check. change 'secret' to whatever you want.
-            // Note: This is visible in source code!
-            if (input === 'tokisa2026') {
-                localStorage.setItem('isLoggedIn', 'true');
-                showContent();
-            } else {
-                document.getElementById('error-msg').style.display = 'block';
-            }
-        }
-
-        function showContent() {
-            document.getElementById('login-area').style.display = 'none';
-            document.getElementById('content-area').style.display = 'flex';
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

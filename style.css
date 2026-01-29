@@ -1,185 +1,159 @@
-@charset "UTF-8";
-
 :root {
+    --primary-color: #0056b3;
+    --secondary-color: #f0f4f8;
     --text-color: #333;
-    --border-color: #000;
-    --bg-color: #ccc;
-    --paper-color: #fff;
-    --primary-color: #333;
-}
-
-* {
-    box-sizing: border-box;
+    --card-bg: #ffffff;
+    --accent-color: #007bff;
 }
 
 body {
-    background-color: var(--bg-color);
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    background: var(--secondary-color);
     color: var(--text-color);
-    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-    font-size: 11pt;
     margin: 0;
-    padding: 20px;
-    -webkit-print-color-adjust: exact;
-}
-
-.page {
-    background: var(--paper-color);
-    width: 210mm;
-    min-height: 297mm;
-    margin: 0 auto;
-    padding: 15mm;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-h1 {
-    text-align: left;
-    font-size: 24pt;
-    margin: 0 0 10mm 0;
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 2mm;
-    line-height: normal;
-}
-
-h1 .date-right {
-    float: right;
-    font-size: 11pt;
-    font-weight: normal;
-    margin-top: 10px;
-}
-
-/* Resume Table Styles */
-table.resume-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 5mm;
-    border: 1px solid var(--border-color);
-}
-
-table.resume-table th, 
-table.resume-table td {
-    border: 1px solid var(--border-color);
-    padding: 4px;
-    vertical-align: middle;
-}
-
-table.resume-table th {
-    background-color: #f0f0f0; /* Slight gray for headers (optional, traditional is white but this helps readability) */
-    font-weight: normal;
-    text-align: center;
-}
-
-/* Specific Columns */
-.col-date-y { width: 60px; text-align: center; }
-.col-date-m { width: 40px; text-align: center; }
-.col-content { text-align: left; padding-left: 10px; }
-
-/* Profile Section */
-.profile-table {
-    width: 100%;
-    margin-bottom: 5mm;
-    border-collapse: collapse;
-}
-.profile-table td {
-    border: 1px solid var(--border-color);
-    padding: 5px;
-}
-
-.furigana-label {
-    font-size: 9pt;
-    margin-bottom: 2px;
-}
-.name-text {
-    font-size: 18pt;
-    font-weight: bold;
-}
-.photo-area {
-    width: 40mm;
-    height: 50mm; /* Standard photo size ratio roughly */
-    text-align: center;
-    vertical-align: middle;
-    border: 1px solid var(--border-color);
-    color: #ccc;
-}
-
-/* Education and History */
-.section-title {
-    text-align: center;
-    font-weight: bold;
-    background: #f9f9f9;
-}
-
-/* Base Styles for Screen */
-@media screen {
-    body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .page {
-        margin-bottom: 20px;
-    }
-}
-
-/* Print Styles */
-@media print {
-    body {
-        background: none;
-        padding: 0;
-    }
-    .page {
-        width: 100%;
-        height: auto;
-        min-height: auto;
-        margin: 0;
-        padding: 0;
-        box-shadow: none;
-        page-break-after: always;
-    }
-}
-
-/* Utility */
-.text-center { text-align: center; }
-.text-right { text-align: right; }
-.mb-2 { margin-bottom: 2mm; }
-.mt-2 { margin-top: 2mm; }
-
-/* Skills Sheet Specific */
-.skills-header {
+    min-height: 100vh;
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #333;
-    padding-bottom: 10px;
+    flex-direction: column;
 }
-.skills-header h1 {
-    border: none;
+
+header {
+    background: var(--primary-color);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header-container h1 {
     margin: 0;
-    padding: 0;
+    font-size: 1.5rem;
 }
-.skill-section {
-    margin-bottom: 25px;
+
+.header-container p {
+    margin: 5px 0 0;
+    opacity: 0.9;
+    font-size: 0.9rem;
 }
-.skill-section h2 {
-    font-size: 14pt;
-    border-left: 5px solid #333;
-    padding-left: 10px;
-    margin-bottom: 15px;
-    background: #eee;
-    padding: 5px 10px;
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 }
-.skill-table {
+
+.diagnostic-card {
+    background: var(--card-bg);
     width: 100%;
-    border-collapse: collapse;
+    max-width: 600px;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    text-align: center;
+    transition: all 0.3s ease;
 }
-.skill-table th, .skill-table td {
-    border: 1px solid #ccc;
-    padding: 8px;
+
+#question-text {
+    font-size: 1.4rem;
+    margin-bottom: 30px;
+    color: #2c3e50;
+}
+
+.options-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.option-btn {
+    background: white;
+    border: 2px solid var(--secondary-color);
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
     text-align: left;
+    color: #555;
+    font-weight: 600;
 }
-.skill-table th {
-    background-color: #f5f5f5;
-    width: 25%;
+
+.option-btn:hover {
+    border-color: var(--accent-color);
+    background: #f8fbff;
+    color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.hidden {
+    display: none;
+}
+
+/* Result Area */
+#result-area {
+    text-align: left;
+    animation: fadeIn 0.5s ease;
+}
+
+.result-header {
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.badge {
+    background: var(--accent-color);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+#result-title {
+    margin-top: 10px;
+    color: var(--primary-color);
+}
+
+#result-desc {
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.result-experience {
+    background: #fdfdfd;
+    border-left: 4px solid #28a745; /* Success Green */
+    padding: 15px;
+    margin-bottom: 30px;
+    border-radius: 0 4px 4px 0;
+}
+
+.result-experience h3 {
+    margin: 0 0 10px;
+    font-size: 1.1rem;
+    color: #28a745;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
