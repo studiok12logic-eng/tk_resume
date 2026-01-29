@@ -95,6 +95,36 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+
+    <script>
+        // Check if already logged in
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            showContent();
+        }
+
+        document.getElementById('login-btn').addEventListener('click', checkPassword);
+        document.getElementById('password-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        function checkPassword() {
+            const input = document.getElementById('password-input').value;
+             // Simple check. change 'secret' to whatever you want.
+            // Note: This is visible in source code!
+            if (input === 'tokisa2026') {
+                localStorage.setItem('isLoggedIn', 'true');
+                showContent();
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        }
+
+        function showContent() {
+            document.getElementById('login-area').style.display = 'none';
+            document.getElementById('content-area').style.display = 'flex';
+        }
+    </script>
 </body>
 </html>
